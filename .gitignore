@@ -1,0 +1,112 @@
+# =========================
+# Maven & Build Artifacts
+# =========================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+
+# Logs
+*.log
+
+# IDE Files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+
+# =========================
+# OS / Editor junk
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# =========================
+# Java
+# =========================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# =========================
+# Temporary Files
+# =========================
+*.tmp
+*.bak
+*.backup
+*.orig
+*.rej
+*.out
+
+# =========================
+# IntelliJ / Eclipse
+# =========================
+.classpath
+.project
+.settings/
+out/
+bin/
+build/
+
+# =========================
+# Sonar / Coverage / Reports
+# =========================
+/.sonar/
+.sonar/
+.coverage/
+jacoco.exec
+jacoco-report/
+target/site/
+coverage-report/
+*.lcov
+
+# =========================
+# Spring Boot
+# =========================
+/logs/
+/tmp/
+/build/
+
+# =========================
+# Other Tools
+# =========================
+# VSCode Java plugin settings
+.factorypath
+.project.json
+
+# =========================
+# Environment / Credentials
+# =========================
+.env
+*.pem
+*.p12
+*.jks
+*.keystore
+*.key
+*.crt
+
+# =========================
+# Generated Docs / Exports
+# =========================
+/doc/
+/docs/
+/apidocs/
+/dist/
+/export/
+/reports/
+
+# =========================
+# OS X & Windows specific
+# =========================
+Icon?
+__MACOSX/
