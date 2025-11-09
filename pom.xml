@@ -6,30 +6,23 @@
 
     <groupId>io.github.codewithintent</groupId>
     <artifactId>rdb-lock</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>rdb-lock-spring-boot-starter</module>
         <module>rdb-lock-core</module>
     </modules>
 
+    <name>RDB Lock</name>
+    <description>Distributed RDB-based lock library for Java and Spring Boot</description>
+    <url>https://github.com/codewithintent/rdb-lock</url>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>3.3.5</spring.boot.version>
+        <spring.boot.version>3.1.5</spring.boot.version>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring.boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 </project>
