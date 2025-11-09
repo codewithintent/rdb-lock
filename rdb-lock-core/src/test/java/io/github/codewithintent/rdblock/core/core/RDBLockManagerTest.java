@@ -5,7 +5,6 @@ import io.github.codewithintent.rdblock.core.RDBLock;
 import io.github.codewithintent.rdblock.core.RDBLockManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RDBLockManagerTest {
@@ -23,69 +22,69 @@ class RDBLockManagerTest {
 
     @Test
     void testTryLock_WhenLockIsAvailable() {
-        Optional<RDBLock> lock = lockManager.tryLock(TEST_KEY, TTL);
+        RDBLock lock = new RDBLock(TEST_KEY, lockManager);
+        boolean acquired = lock.tryLock(TTL);
 
-        assertTrue(lock.isPresent());
-        assertEquals(TEST_KEY, lock.get().key());
-        assertEquals(OWNER_ID, lock.get().ownerId());
-        assertFalse(lock.get().isExpired());
+        assertTrue(acquired);
+        assertEquals(TEST_KEY, lock.key());
+        assertTrue(lock.isLocked());
     }
 
     @Test
     void testTryLock_WhenLockIsNotAvailable() {
         // Acquire first lock
-        lockManager.tryLock(TEST_KEY, TTL);
+        RDBLock lock1 = new RDBLock(TEST_KEY, lockManager);
+        assertTrue(lock1.tryLock(TTL));
 
         // Try to acquire same lock
-        Optional<RDBLock> lock = lockManager.tryLock(TEST_KEY, TTL);
-
-        assertTrue(lock.isEmpty());
+        RDBLock lock2 = new RDBLock(TEST_KEY, lockManager);
+        assertFalse(lock2.tryLock(TTL));
     }
 
     @Test
-    void testReleaseLock_WithLockObject() {
-        Optional<RDBLock> lock = lockManager.tryLock(TEST_KEY, TTL);
-        assertTrue(lock.isPresent());
+    void testReleaseLock() {
+        RDBLock lock = new RDBLock(TEST_KEY, lockManager);
+        lock.tryLock(TTL);
+        assertTrue(lock.isLocked());
 
-        lockManager.releaseLock(lock.get());
-        assertFalse(lockManager.isLocked(TEST_KEY));
-    }
-
-    @Test
-    void testReleaseLock_WithKey() {
-        lockManager.tryLock(TEST_KEY, TTL);
-
-        lockManager.releaseLock(TEST_KEY);
-        assertFalse(lockManager.isLocked(TEST_KEY));
+        lock.releaseLock();
+        assertFalse(lock.isLocked());
     }
 
     @Test
     void testIsLocked_WithKey() {
         assertFalse(lockManager.isLocked(TEST_KEY));
 
-        lockManager.tryLock(TEST_KEY, TTL);
+        RDBLock lock = new RDBLock(TEST_KEY, lockManager);
+        lock.tryLock(TTL);
         assertTrue(lockManager.isLocked(TEST_KEY));
     }
 
     @Test
-    void testIsLocked_WithLockObject() {
-        Optional<RDBLock> lock = lockManager.tryLock(TEST_KEY, TTL);
-        assertTrue(lock.isPresent());
-
-        assertTrue(lockManager.isLocked(lock.get()));
-    }
-
-    @Test
     void testIsLocked_WithExpiredLock() throws InterruptedException {
-        Optional<RDBLock> lock = lockManager.tryLock(TEST_KEY, 1); // 1ms TTL
-        assertTrue(lock.isPresent());
+        RDBLock lock = new RDBLock(TEST_KEY, lockManager);
+        lock.tryLock(1); // 1ms TTL
 
         Thread.sleep(10); // Wait for lock to expire
-        assertFalse(lockManager.isLocked(lock.get()));
+        assertFalse(lock.isLocked());
     }
 
     @Test
-    void testIsLocked_WithNullLock() {
-        assertFalse(lockManager.isLocked((RDBLock) null));
+    void testGetLock() {
+        RDBLock lock = lockManager.getLock(TEST_KEY);
+
+        assertNotNull(lock);
+        assertEquals(TEST_KEY, lock.key());
+        assertFalse(lock.isLocked()); // Initial state should be unlocked
+
+        // Verify the lock is functional
+        assertTrue(lock.tryLock(TTL));
+        assertTrue(lock.isLocked());
+
+        // Create another lock instance for the same key
+        RDBLock lock2 = lockManager.getLock(TEST_KEY);
+        assertNotNull(lock2);
+        assertEquals(TEST_KEY, lock2.key());
+        assertFalse(lock2.tryLock(TTL)); // Should fail as the first lock is still held
     }
 }

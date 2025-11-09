@@ -1,9 +1,8 @@
 package io.github.codewithintent.rdblock.core;
 
 import java.time.Instant;
-import java.util.Optional;
 
-public class RDBLockManager implements ILockManager {
+public final class RDBLockManager implements ILockManager {
     private final LockStore store;
     private final String ownerId;
 
@@ -13,21 +12,15 @@ public class RDBLockManager implements ILockManager {
     }
 
     @Override
-    public Optional<RDBLock> tryLock(String key, long ttlMillis) {
-        Instant expiresAt = Instant.now().plusMillis(ttlMillis);
-
-        boolean acquired = store.acquireLock(key, ownerId, expiresAt);
-        if (acquired) {
-            RDBLock lock = new RDBLock(key, ownerId, expiresAt);
-            return Optional.of(lock);
-        }
-        return Optional.empty();
+    public RDBLock getLock(String key) {
+        return new RDBLock(key, this);
     }
 
     @Override
-    public void releaseLock(RDBLock lock) {
-        if (lock == null) return;
-        releaseLock(lock.key());
+    public boolean tryLock(String key, long ttlMillis) {
+        Instant expiresAt = Instant.now().plusMillis(ttlMillis);
+
+        return store.acquireLock(key, ownerId, expiresAt);
     }
 
     @Override
@@ -40,9 +33,4 @@ public class RDBLockManager implements ILockManager {
         return store.isLocked(key);
     }
 
-    @Override
-    public boolean isLocked(RDBLock lock) {
-        if (lock == null || lock.isExpired()) return false;
-        return isLocked(lock.key());
-    }
 }
