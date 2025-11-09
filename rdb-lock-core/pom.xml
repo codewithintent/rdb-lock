@@ -6,12 +6,12 @@
     <parent>
         <groupId>io.github.codewithintent</groupId>
         <artifactId>rdb-lock</artifactId>
-        <version>1.0.2</version>
+        <version>2.0.0</version>
     </parent>
 
     <groupId>io.github.codewithintent</groupId>
     <artifactId>rdb-lock-core</artifactId>
-    <version>1.0.2</version>
+    <version>2.0.0</version>
     <name>RDB Lock Core</name>
     <description>Core distributed RDB-based lock implementation</description>
     <url>https://github.com/codewithintent/rdb-lock</url>
