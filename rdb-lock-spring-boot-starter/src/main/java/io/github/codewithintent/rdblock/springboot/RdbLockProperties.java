@@ -1,7 +1,9 @@
 package io.github.codewithintent.rdblock.springboot;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
+@Component
 @ConfigurationProperties(prefix = "rdb.lock")
 public class RdbLockProperties {
 

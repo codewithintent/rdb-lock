@@ -6,12 +6,12 @@
     <parent>
         <groupId>io.github.codewithintent</groupId>
         <artifactId>rdb-lock</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <groupId>io.github.codewithintent</groupId>
     <artifactId>rdb-lock-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>RDB Lock Spring Boot Starter</name>
     <description>Spring Boot starter for RDB Lock</description>
     <url>https://github.com/codewithintent/rdb-lock</url>
