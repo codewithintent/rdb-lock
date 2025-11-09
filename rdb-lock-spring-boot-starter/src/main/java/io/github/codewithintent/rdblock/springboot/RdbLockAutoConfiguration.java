@@ -1,15 +1,12 @@
 package io.github.codewithintent.rdblock.springboot;
 
 import io.github.codewithintent.rdblock.core.DbDialect;
-import io.github.codewithintent.rdblock.core.ILockManager;
 import io.github.codewithintent.rdblock.core.LockStore;
 import io.github.codewithintent.rdblock.core.RDBLockManager;
 import io.github.codewithintent.rdblock.core.lockstores.MySqlLockStore;
 import io.github.codewithintent.rdblock.core.lockstores.PostgresLockStore;
 import io.github.codewithintent.rdblock.core.lockstores.RdbLockStore;
 import io.github.codewithintent.rdblock.core.utils.JDBCUtils;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +19,6 @@ import javax.sql.DataSource;
 public class RdbLockAutoConfiguration {
 
     @Bean
-    @ConditionalOnBean(DataSource.class)
-    @ConditionalOnMissingBean(LockStore.class)
     public LockStore lockStore(DataSource dataSource, RdbLockProperties props) {
         DbDialect dialect = switch (props.getDialect().toLowerCase()) {
             case "postgres" -> DbDialect.POSTGRES;
@@ -44,8 +39,7 @@ public class RdbLockAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(ILockManager.class)
-    public ILockManager lockManager(LockStore store, Environment env) {
+    public RDBLockManager rdbLockManager(LockStore store, Environment env) {
         String appName = env.getProperty("spring.application.name", System.getenv().getOrDefault("APP_NAME", "anon-app"));
         return new RDBLockManager(store, appName);
     }

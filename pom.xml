@@ -6,7 +6,7 @@
 
     <groupId>io.github.codewithintent</groupId>
     <artifactId>rdb-lock</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
     <modules>
         <module>rdb-lock-spring-boot-starter</module>
